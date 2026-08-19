@@ -40,9 +40,15 @@ export async function getCategoryCounts() {
 }
 
 /**
- * Formats a deadline for display and flags anything within 14 days as urgent.
+ * Formats a deadline for display. If `deadline_text` is set (e.g. "Rolling
+ * admissions"), it wins — that's the point of the field, for opportunities
+ * where there's no single hard date worth tracking. Otherwise falls back to
+ * the exact `deadline` date, flagging anything within 14 days as urgent.
  */
-export function formatDeadline(dateString) {
+export function formatDeadline(opportunity) {
+  const { deadline: dateString, deadline_text: freeform } = opportunity
+
+  if (freeform) return { label: freeform, urgent: false }
   if (!dateString) return { label: 'Rolling / no fixed deadline', urgent: false }
 
   const deadline = new Date(dateString)

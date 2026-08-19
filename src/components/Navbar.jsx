@@ -44,6 +44,15 @@ export default function Navbar({ variant = 'public' }) {
                 </Link>
               )}
               {variant === 'dashboard' && (
+                <Link
+                  to="/dashboard/saved"
+                  className="text-sm font-medium px-4 py-2 rounded-full border transition-colors hover:text-white"
+                  style={{ borderColor: 'var(--line)', color: 'var(--muted)' }}
+                >
+                  Saved
+                </Link>
+              )}
+              {variant === 'dashboard' && (
                 <button
                   onClick={handleSignOut}
                   className="text-sm font-medium px-4 py-2 rounded-full border transition-colors hover:text-white"

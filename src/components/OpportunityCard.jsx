@@ -1,7 +1,10 @@
 import { formatDeadline } from '../lib/opportunities'
 
-export default function OpportunityCard({ opportunity, saved, onToggleSave, savePending }) {
-  const deadline = formatDeadline(opportunity.deadline)
+export default function OpportunityCard({ opportunity, saved, onToggleSave, savePending, categoryLabel }) {
+  const deadline = formatDeadline(opportunity)
+  const tags = opportunity.tags
+    ? opportunity.tags.split(',').map((t) => t.trim()).filter(Boolean)
+    : []
 
   return (
     <div
@@ -10,6 +13,11 @@ export default function OpportunityCard({ opportunity, saved, onToggleSave, save
     >
       <div className="flex items-start justify-between gap-4">
         <div>
+          {categoryLabel && (
+            <p className="font-mono text-[11px] uppercase tracking-wider mb-1.5" style={{ color: 'var(--violet)' }}>
+              {categoryLabel}
+            </p>
+          )}
           <h3 className="font-display text-lg font-semibold leading-snug" style={{ color: 'var(--ink)' }}>
             {opportunity.title}
           </h3>
@@ -44,9 +52,9 @@ export default function OpportunityCard({ opportunity, saved, onToggleSave, save
         {deadline.label}
       </div>
 
-      {opportunity.tags?.length > 0 && (
+      {tags.length > 0 && (
         <div className="flex flex-wrap gap-2">
-          {opportunity.tags.map((tag) => (
+          {tags.map((tag) => (
             <span
               key={tag}
               className="text-xs px-2.5 py-1 rounded-full border"
