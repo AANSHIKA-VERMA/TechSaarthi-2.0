@@ -100,8 +100,85 @@ up on the site immediately, no redeploy needed.
 
 ## What's stubbed for later
 
-- **Chatbot / Motivate Me** — Day 3, via a serverless function so the LLM API key never touches the browser.
 - **Smart filtering, weekly digest, resume analysis, admin panel** — explicitly cut from MVP scope; revisit after launch.
+
+## Day 3 — AI chatbot + Motivate Me
+
+### 1. Get a free Gemini API key
+
+1. Go to https://aistudio.google.com/apikey (sign in with any Google account).
+2. Click **Create API key**. Free tier is generous enough for a student MVP demo.
+3. Copy the key.
+
+### 2. Add it to your environment
+
+In your `.env` file, add:
+```
+GEMINI_API_KEY=your-gemini-api-key
+```
+Notice this one has **no `VITE_` prefix**, unlike your Supabase keys — that's
+intentional. Vite only bundles `VITE_`-prefixed variables into the browser
+code; leaving this one unprefixed means it stays server-side, inside
+`api/chat.js`, and never reaches anyone's browser dev tools. Don't rename it.
+
+### 3. Testing it locally (needs the Vercel CLI)
+
+`npm run dev` only runs the Vite frontend — it doesn't know how to run
+`api/chat.js`, since that's a Vercel serverless function, not part of your
+React app. To test the chatbot before deploying, run both together with the
+Vercel CLI:
+
+```bash
+npm install -g vercel      # one-time
+vercel login                # one-time, opens a browser to authenticate
+vercel link                 # one-time per project, connects this folder to a Vercel project
+vercel env pull .env.local  # pulls env vars you've set in the Vercel dashboard
+vercel dev                  # runs frontend + /api together, usually on localhost:3000
+```
+
+If you haven't deployed to Vercel yet, `vercel link` will offer to create a
+new project for you — say yes, then go add `GEMINI_API_KEY` (and your two
+Supabase vars) under that project's **Settings → Environment Variables** in
+the Vercel dashboard before running `vercel env pull`.
+
+Alternative: skip local testing and just deploy — see below, it's the same
+effort either way for a solo dev on a deadline.
+
+### 4. Deploying
+
+Same Vercel project as before. Just make sure these 3 environment variables
+are set under **Settings → Environment Variables** (Production *and*
+Preview):
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `GEMINI_API_KEY`
+
+Push to GitHub, Vercel redeploys automatically. `/api/chat.js` is picked up
+with zero config — Vercel auto-detects anything in an `/api` folder as a
+serverless function alongside your static Vite build.
+
+### 5. What's new in the app
+
+- A floating chat button, bottom-right, on every dashboard page (hidden on
+  the public landing page and while logged out).
+- Click it → a chat panel opens. Ask about eligibility, what a program
+  involves, or general career questions — it's grounded with a system prompt
+  about TechSaarthi's categories, not a generic chatbot.
+- **Motivate Me** — a button on the dashboard hero (and inside the chat panel
+  before you've sent anything) that requests a short, warm, specific
+  motivational message with one concrete next step, not generic positivity.
+- Your API key is never sent to the browser — every request goes
+  `browser → /api/chat.js → Gemini`, with the key only living in the
+  serverless function's environment.
+
+### 6. If the chatbot doesn't respond
+
+- Check the browser console and the Vercel function logs (**Vercel dashboard
+  → your project → Deployments → click a deployment → Functions**) — the
+  most common cause is `GEMINI_API_KEY` missing or mistyped in Vercel's env
+  vars, or not pulled locally via `vercel env pull`.
+- Free-tier Gemini keys have a requests-per-minute limit — if you're testing
+  rapidly, you may hit it. Wait a minute and try again.
 
 ## Day 2b — Saved page, flexible deadlines, bulk CSV import
 
