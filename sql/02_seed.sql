@@ -1,9 +1,3 @@
--- TechSaarthi — seed data
--- Run this AFTER 01_schema.sql (or after 03_migration if you're updating an
--- existing project). Replace apply_link / notion_link with your real links
--- whenever you have them — this just gets the app looking alive today.
--- Re-run safely: it clears existing rows first.
-
 truncate table saved_opportunities, opportunities restart identity cascade;
 
 insert into opportunities (title, organization, category, deadline, deadline_text, tags, apply_link, reference_video, notion_link) values

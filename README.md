@@ -102,6 +102,57 @@ up on the site immediately, no redeploy needed.
 
 - **Smart filtering, weekly digest, resume analysis, admin panel** — explicitly cut from MVP scope; revisit after launch.
 
+## CI/CD + Docker (for your portfolio, optional for the MVP itself)
+
+### CI — GitHub Actions
+
+`.github/workflows/ci.yml` runs `npm run lint` and `npm run build` on every
+push and pull request to `main`. Nothing to configure — it runs automatically
+once this is pushed to GitHub. Check the **Actions** tab on your repo after
+your first push to see it run.
+
+### CD — you already have this
+
+Vercel deploys a preview URL on every pull request and redeploys production
+automatically on merge to `main`. That's your CD pipeline — it's been running
+since Day 1, nothing new to add. Worth stating explicitly on your resume:
+*"CI via GitHub Actions, CD via Vercel's git-integrated pipeline."*
+
+### Docker — optional, for local-dev parity and as a skill demo
+
+```bash
+docker compose up --build
+```
+
+Then visit `http://localhost:8080`. This builds the frontend inside a
+container and serves it with nginx.
+
+**Important limitation:** this only containerizes the static frontend. The
+chatbot's `/api/chat.js` is a Vercel serverless function — it isn't inside
+this container, so the chat widget will fail with a network error when run
+this way. That's expected, not a bug. For full local testing including the
+chatbot, use `vercel dev` (see the Day 3 section above) instead. Mention this
+trade-off if it comes up in an interview — it shows you understand *why*
+Vercel's function model and a Docker container are different things, not
+that you tried to force them together incorrectly.
+
+You'll need real Supabase values for the build to be useful beyond the
+placeholder screen:
+```bash
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co VITE_SUPABASE_ANON_KEY=your-anon-key docker compose up --build
+```
+
+### AWS
+
+Deliberately not part of this MVP. Supabase (Postgres + auth) and Vercel
+(hosting + serverless functions) already cover what AWS's RDS + Cognito +
+Lambda/ECS would give you — swapping them out this week would be
+re-architecture, not improvement. If you want AWS experience tied to this
+project later, a clean add-on (not a replacement) is moving file/image
+storage to S3 once the app needs to handle uploads, or standing up a second
+mirror deployment on AWS Amplify to demonstrate multi-cloud familiarity.
+Neither is needed for the MVP to work or to demo well.
+
 ## Day 3 — AI chatbot + Motivate Me
 
 ### 1. Get a free Gemini API key
