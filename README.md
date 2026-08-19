@@ -103,6 +103,59 @@ up on the site immediately, no redeploy needed.
 - **Chatbot / Motivate Me** — Day 3, via a serverless function so the LLM API key never touches the browser.
 - **Smart filtering, weekly digest, resume analysis, admin panel** — explicitly cut from MVP scope; revisit after launch.
 
+## Day 2b — Saved page, flexible deadlines, bulk CSV import
+
+### 1. Run the migration
+
+You already ran `01_schema.sql` and `02_seed.sql` before, so just run the new
+migration file in **SQL Editor**:
+
+1. Paste and run `sql/03_migration_tags_and_deadline.sql`. This does two things:
+   - Converts `tags` from a Postgres array to plain comma-separated text —
+     way easier to type into a spreadsheet, no special syntax.
+   - Adds `deadline_text`, a freeform field for opportunities without one
+     fixed date (e.g. `"Rolling admissions"`, `"Closes end of Nov"`, `"Check
+     website"`). When it's filled in, it overrides the exact-date badge on
+     the card. Leave it blank and the app falls back to the `deadline` date
+     as before, or "Rolling / no fixed deadline" if both are empty.
+2. Re-run `sql/02_seed.sql` to refresh the placeholder rows in the new format
+   (it truncates first, so this is safe).
+
+### 2. Bulk-adding opportunities without SQL or forms
+
+For anything beyond a handful of rows, don't add them one at a time in Table
+Editor — use CSV import instead:
+
+1. Open `data-templates/opportunities_template.csv` in Google Sheets or
+   Excel. It has the exact columns the table expects, with two example rows.
+2. Fill in as many rows as you have opportunities for. Notes on the columns:
+   - `category` must be exactly one of `internships`, `scholarships`,
+     `hackathons`, `leadership` — a typo will make that row fail to import.
+     In Google Sheets, select the column → **Data → Data validation** → list
+     of those 4 values, so you can only pick from a dropdown.
+   - `deadline` format is `YYYY-MM-DD`. Leave it blank if you're using
+     `deadline_text` instead.
+   - `tags` is one cell, comma-separated, e.g. `Remote, Paid, Female-only`.
+   - Leave `reference_video` blank if you don't have one — it just won't
+     show on the card.
+3. **File → Download → Comma-separated values (.csv)**.
+4. In Supabase: **Table Editor → opportunities → Insert → Import data from
+   CSV**, upload your file, confirm the column mapping, import.
+
+That's it — 100 rows in one pass, no code involved. Re-do this anytime you
+have a new batch; existing rows won't be touched unless you re-import over
+the same IDs.
+
+### 3. What's new in the app
+
+- **`/dashboard/saved`** — every opportunity you've bookmarked, across all
+  four categories, in one place. Linked from the "Saved" button in the
+  dashboard navbar. Un-saving from here removes it from the list immediately.
+- Deadline badges now show your `deadline_text` when you've set one, instead
+  of forcing an exact date.
+- Tags are plain text now (`tags` column), not a Postgres array — matters
+  only if you're editing rows directly in Table Editor or writing SQL by hand.
+
 ## Project structure
 
 ```
