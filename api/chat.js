@@ -1,9 +1,3 @@
-// Vercel serverless function — deployed automatically at /api/chat.
-// Runs on the server, so GEMINI_API_KEY never reaches the browser.
-//
-// Frontend calls this with: { messages: [{role, content}, ...], mode: 'chat' | 'motivate' }
-// It returns: { reply: string }
-
 const CHAT_SYSTEM_PROMPT = `You are the TechSaarthi AI assistant, embedded in a platform that helps
 women BTech students discover internships, scholarships, hackathons, and
 leadership programs in tech. Answer career-related questions, explain what an
@@ -50,7 +44,7 @@ export default async function handler(req, res) {
 
   try {
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
