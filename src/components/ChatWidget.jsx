@@ -1,6 +1,28 @@
 import { useEffect, useRef, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import { useAuth } from '../context/AuthContext'
 import { useChat } from '../context/ChatContext'
+
+// Assistant replies may use light markdown (bold, bullet lists) — render it
+// properly instead of showing raw ** and * characters. Kept intentionally
+// minimal: no headings/links/images/tables, since this is a small chat
+// bubble, not a document viewer.
+const markdownComponents = {
+  p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+  strong: ({ children }) => (
+    <strong className="font-semibold" style={{ color: '#FDF3DC' }}>
+      {children}
+    </strong>
+  ),
+  ul: ({ children }) => <ul className="list-disc pl-4 mb-2 last:mb-0 space-y-1">{children}</ul>,
+  ol: ({ children }) => <ol className="list-decimal pl-4 mb-2 last:mb-0 space-y-1">{children}</ol>,
+  li: ({ children }) => <li>{children}</li>,
+  a: ({ children, href }) => (
+    <a href={href} target="_blank" rel="noreferrer" className="underline" style={{ color: 'var(--gold)' }}>
+      {children}
+    </a>
+  ),
+}
 
 export default function ChatWidget() {
   const { user } = useAuth()
@@ -64,8 +86,9 @@ export default function ChatWidget() {
         {messages.length === 0 && (
           <div>
             <p className="text-sm mb-4" style={{ color: 'var(--muted)' }}>
-              Ask about eligibility, next steps, or how to get unstuck — or just say
-              hi. I know the categories on this site and the general landscape.
+              Tell me your year and what part of tech interests you, or just tap
+              below — I'll ask what I need to point you at the right
+              opportunities.
             </p>
             <button
               onClick={motivateMe}
@@ -80,14 +103,18 @@ export default function ChatWidget() {
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div
-              className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap"
+              className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed"
               style={
                 m.role === 'user'
                   ? { background: 'var(--gold)', color: 'var(--ink)' }
                   : { background: 'var(--ink-soft)', color: '#E5E1F7' }
               }
             >
-              {m.content}
+              {m.role === 'user' ? (
+                <span className="whitespace-pre-wrap">{m.content}</span>
+              ) : (
+                <ReactMarkdown components={markdownComponents}>{m.content}</ReactMarkdown>
+              )}
             </div>
           </div>
         ))}

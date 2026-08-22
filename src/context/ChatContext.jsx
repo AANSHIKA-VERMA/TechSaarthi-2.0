@@ -9,14 +9,14 @@ export function ChatProvider({ children }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  const callApi = useCallback(async (nextMessages, mode) => {
+  const callApi = useCallback(async (nextMessages) => {
     setLoading(true)
     setError(null)
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: nextMessages.slice(-MAX_HISTORY), mode }),
+        body: JSON.stringify({ messages: nextMessages.slice(-MAX_HISTORY) }),
       })
       if (!res.ok) throw new Error('Request failed')
       const data = await res.json()
@@ -34,18 +34,25 @@ export function ChatProvider({ children }) {
       if (!trimmed) return
       setMessages((prev) => {
         const next = [...prev, { role: 'user', content: trimmed }]
-        callApi(next, 'chat')
+        callApi(next)
         return next
       })
     },
     [callApi]
   )
 
+  // Kicks off the same mentor conversation, just with an opening message
+  // that nudges toward guidance/motivation rather than a direct question.
+  // The system prompt (not this text) is what makes it act like a mentor —
+  // see api/chat.js.
   const motivateMe = useCallback(() => {
     setIsOpen(true)
     setMessages((prev) => {
-      const next = [...prev, { role: 'user', content: 'Motivate me' }]
-      callApi(next, 'motivate')
+      const next = [
+        ...prev,
+        { role: 'user', content: "I could use some guidance and motivation on my path — can you help?" },
+      ]
+      callApi(next)
       return next
     })
   }, [callApi])
