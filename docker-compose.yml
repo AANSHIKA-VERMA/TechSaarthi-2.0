@@ -1,4 +1,12 @@
 # One-command local run: `docker compose up --build`
+#
+# Limitation worth knowing (and worth mentioning if asked in an interview):
+# this container only serves the static frontend. The chatbot calls
+# /api/chat.js, which is a Vercel serverless function — it doesn't exist
+# inside this container, so the chat widget will fail with a network error
+# when the app is run this way. For full local testing including the
+# chatbot, use `vercel dev` instead (see README). This compose file is
+# primarily for demonstrating containerized delivery of the frontend.
 
 services:
   web:

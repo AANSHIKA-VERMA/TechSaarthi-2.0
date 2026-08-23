@@ -1,0 +1,13 @@
+{
+  "name": "TechSaarthi",
+  "short_name": "TechSaarthi",
+  "description": "Internships, hackathons, scholarships and leadership programs for women in tech, with an AI guide built in.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B0F1F",
+  "theme_color": "#0B0F1F",
+  "icons": [
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

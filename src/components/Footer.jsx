@@ -27,7 +27,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 pb-8 text-xs" style={{ color: '#4B4A5F' }}>
-        © {new Date().getFullYear()} TechSaarthi. Built as a student MVP.
+        © {new Date().getFullYear()} TechSaarthi · Made by students, for students — and open to yours.
       </div>
     </footer>
   )
