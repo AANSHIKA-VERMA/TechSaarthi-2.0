@@ -310,6 +310,32 @@ function SharePostForm({ user }) {
   return (
     <div>
       <form onSubmit={handleSubmit} className="rounded-2xl p-6 border space-y-4" style={{ background: 'white', borderColor: 'var(--paper-dim)' }}>
+
+        {/* Content Policy */}
+        <div
+          className="rounded-lg border px-4 py-3"
+          style={{
+            background: 'rgba(212, 175, 55, 0.10)',
+            borderColor: 'var(--gold)',
+          }}
+        >
+          <h3
+            className="font-mono text-xs uppercase tracking-wider font-semibold mb-1.5"
+            style={{ color: 'var(--ink)' }}
+          >
+            Content Policy
+          </h3>
+
+          <ul
+            className="list-disc pl-4 space-y-0.5 text-xs leading-5"
+            style={{ color: '#5F5E72' }}
+          >
+            <li>Keep feedback constructive — don’t name or negatively call out a specific interviewer.</li>
+            <li>Don’t share confidential interview questions or details covered by an NDA.</li>
+            <li>Anonymous posts are still reviewed and moderated.</li>
+          </ul>
+        </div>
+        
         <div>
           <label className="block font-mono text-xs uppercase tracking-wider mb-1.5" style={{ color: '#6B6A85' }}>Title *</label>
           <input className={inputClass} style={inputStyle} value={form.title} onChange={update('title')} placeholder="What I learned applying to 12 internships" />
