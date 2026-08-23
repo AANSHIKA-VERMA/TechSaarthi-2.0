@@ -28,6 +28,7 @@ export default function Navbar({ variant = 'public' }) {
             <a href="#opportunities" className="hover:text-white transition-colors">Opportunities</a>
             <a href="#offer" className="hover:text-white transition-colors">What We Offer</a>
             <a href="#about" className="hover:text-white transition-colors">About</a>
+            <Link to="/blog" className="hover:text-white transition-colors">Stories</Link>
           </div>
         )}
 
@@ -41,6 +42,15 @@ export default function Navbar({ variant = 'public' }) {
                   style={{ background: 'var(--gold)', color: 'var(--ink)' }}
                 >
                   Dashboard
+                </Link>
+              )}
+              {variant === 'dashboard' && (
+                <Link
+                  to="/dashboard/contribute"
+                  className="text-sm font-medium px-4 py-2 rounded-full border transition-colors hover:text-white hidden sm:inline-block"
+                  style={{ borderColor: 'var(--line)', color: 'var(--muted)' }}
+                >
+                  Contribute
                 </Link>
               )}
               {variant === 'dashboard' && (

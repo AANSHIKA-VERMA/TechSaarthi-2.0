@@ -1,3 +1,6 @@
+-- TechSaarthi — Day 2 schema
+-- Run this once in Supabase: Dashboard → SQL Editor → New query → paste → Run
+
 -- 1. Opportunities table (public data, read by everyone)
 create table if not exists opportunities (
   id uuid primary key default gen_random_uuid(),
@@ -19,6 +22,8 @@ create policy "Anyone can read opportunities"
   on opportunities for select
   using (true);
 
+-- No insert/update/delete policy for regular users on purpose —
+-- you'll manage listings from the Supabase Table Editor or SQL, not the app.
 
 -- 2. Saved / bookmarked opportunities (per logged-in user)
 create table if not exists saved_opportunities (
