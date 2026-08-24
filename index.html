@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MZSK4EGB8G"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-MZSK4EGB8G');
+    </script>
+    
     <meta charset="UTF-8" />
 
     <!-- ============================== Core SEO ============================== -->
@@ -18,16 +28,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0B0F1F" />
 
-    <!-- Replace with your real production domain once you have one -->
-    <link rel="canonical" href="https://techsaarthi.vercel.app/" />
+    <link rel="canonical" href="https://techsaarthi.vercel.app" />
 
-    <!-- ============================ Open Graph ============================== -->
-    <!-- Controls how the link looks when shared on WhatsApp, LinkedIn, Facebook,
-         Slack, Discord, etc. — this is the single biggest lever for "other
-         students finding it" when a link gets forwarded around. -->
+
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="TechSaarthi" />
-    <meta property="og:url" content="https://techsaarthi.vercel.app/" />
+    <meta property="og:url" content="https://techsaarthi.vercel.app" />
     <meta property="og:title" content="TechSaarthi — Internships, Scholarships & Hackathons for Women in Tech" />
     <meta
       property="og:description"
@@ -62,19 +68,19 @@
     />
 
     <!-- ======================= Structured data (JSON-LD) ===================== -->
-    <!-- Helps Google understand what this site is, independent of page text.
-         Doesn't guarantee a rich result, but it's a well-supported signal. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "TechSaarthi",
-        "url": "https://techsaarthi.vercel.app/",
+        "url": "https://techsaarthi.vercel.app"
         "description": "TechSaarthi helps women BTech students discover internships, scholarships, hackathons, and leadership programs in tech, with an AI mentor built in.",
         "inLanguage": "en"
       }
     </script>
   </head>
+
+  
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
