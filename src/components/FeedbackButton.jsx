@@ -2,7 +2,7 @@ const GOOGLE_FORM_URL = 'https://forms.gle/haM39qRdsDe4dCeb6'
 
 export default function FeedbackButton() {
   return (
-    
+    <a
       href={GOOGLE_FORM_URL}
       target="_blank"
       rel="noreferrer"
