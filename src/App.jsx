@@ -12,6 +12,7 @@ import Saved from './pages/Saved'
 import Contribute from './pages/Contribute'
 import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
+import FeedbackButton from './components/FeedbackButton'
 
 export default function App() {
   return (
@@ -58,6 +59,7 @@ export default function App() {
             />
           </Routes>
           <ChatWidget />
+          <FeedbackButton />
         </ChatProvider>
       </AuthProvider>
     </BrowserRouter>
